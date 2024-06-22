@@ -50,4 +50,38 @@ for each unique combination of type and timestamp.
 - Response:
   - successfully fetched: 200 OK and array of **MetricNode**s
   - an empty fetch result: 204 No Content
-  - on error: 400 and badRequest JSON object 
+  - on error: 400 and badRequest JSON object
+
+#### Technical Details
+##### API
+API is defined in [OpenAPI 3](https://swagger.io/specification/v3/) format in the [openapi.yaml](./openapi/openapi.yaml) file.  
+DTOs and service interface code is generated using [oapi-codegen](https://github.com/deepmap/oapi-codegen).
+
+##### HTTP server
+[Echo](https://echo.labstack.com/) framework is used to manage routes. API generator has a nice integration with this framework.
+
+### Show Me The Money
+There are 2 main files:
+- HTTP server and handlers: [aerospike_service.go](internal/service/http/rrd_service/aerospike_service.go)  
+  includes the HTTP request handlers
+- Aerospike DB driver: [aerospike_driver.go](internal/drivers/cache/aerospike_driver.go)  
+  includes DB put/get handlers
+
+### Config
+The configuration file is provided: [development.env](configs/development.env)
+
+### How To Run
+1. The simplest way is to run it in docker-compose the command:
+   ```
+    docker-compose -f ./docker-compose/docker-compose-all.yml up -d
+   ```
+   In this case, both the rrd-server and the Aerospike DB will be started.  
+   NOTE: There is a small issue with starting AerospikeDB, so we should wait for 20 seconds   
+   before running the rrd-server.
+2. We can also run the rrd-server and the Aerospike DB in separate containers.
+```
+ docker-compose -f docker-compose/docker-compose-aerospike.yml up -d
+ docker-compose -f docker-compose/docker-compose-asrrd.yml up -d
+```
+In this case, make sure that the Aerospike DB is running before  
+you start the rrd-service.
