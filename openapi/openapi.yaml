@@ -37,7 +37,7 @@ paths:
         '200':
           $ref: '#/components/responses/okGetResponse'
         '204':
-          $ref: '#/components/responses/notFound'
+          description: an empty fetch result
         '400':
           $ref: '#/components/responses/badRequest'
 components:
@@ -125,8 +125,7 @@ components:
   responses:
     okGetResponse:
       description: |- 
-        HTTP 200 OK with a list of pairs (long, double) 
-        representing the metrics in the specified range
+        HTTP 200 OK with a list of MetricsData
       content:
         application/json:
           schema:
@@ -142,12 +141,6 @@ components:
             $ref: '#/components/schemas/OkResponse'
     badRequest:
       description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProblemDetail'
-    notFound:
-      description: Not found
       content:
         application/json:
           schema:

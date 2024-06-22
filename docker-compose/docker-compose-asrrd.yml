@@ -1,0 +1,13 @@
+---
+version: '3.8'
+services:
+  as-rrd:
+    platform: linux/x86_64
+    image: yuril/aerospike-ha:0.0.2
+    container_name: as-rrd
+    ports:
+      - "8080:8080"
+    environment:
+      - AS_DB_DRIVER_HOST=host.docker.internal
+    command: [ "./asrrdservice" ]
+...

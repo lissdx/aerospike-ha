@@ -75,9 +75,6 @@ type StartTime = float64
 // BadRequest defines model for badRequest.
 type BadRequest = ProblemDetail
 
-// NotFound defines model for notFound.
-type NotFound = ProblemDetail
-
 // OkGetResponse defines model for okGetResponse.
 type OkGetResponse = []MetricsData
 

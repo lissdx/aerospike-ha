@@ -14,26 +14,14 @@ type AerospikeProcess struct {
 	process.Nameable
 	logger     logger.ILogger
 	rrdService *rrdService.RrdServer
-	//echoServer *echo.Echo
 }
 
 func (asp *AerospikeProcess) Run() {
-
 	asp.rrdService.Run()
-	//err := asp.echoServer.Start("0.0.0.0:8080")
-	//
-	//if err != nil {
-	//	asp.logger.Fatal(err.Error())
-	//}
 }
 
 func (asp *AerospikeProcess) Stop() {
 	asp.rrdService.Stop()
-	//err := asp.echoServer.Shutdown(context.Background())
-	//asp.rrdService.Driver.Stop()
-	//if err != nil {
-	//	asp.logger.Error(err)
-	//}
 }
 
 func NewAerospikeProcess(pConf procConfig.ProcessConfigure, logger logger.ILogger, rrdService *rrdService.RrdServer) process.NameableProcessor {
