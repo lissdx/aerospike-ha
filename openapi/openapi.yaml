@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: RRD-like HTTP service
+  description: |-
+    The service's purpose is to store time series data such as 
+    network bandwidth, temperatures, CPU load, and a timestamp at which the 
+    metrics have been recorded in a round-robin manner. The service will 
+    store a configurable number of entries and evict the oldest entry to 
+    make room for the newest.
+  version: 0.0.1
+servers:
+  - url: '/api'
+paths:
+  /metrics:
+    put:
+      operationId: putMetrics
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetricsData'
+      responses:
+        '200':
+          $ref: '#/components/responses/okResponse'
+        '400':
+          $ref: '#/components/responses/badRequest'
+    get:
+      summary: representing the metrics in the specified range
+      operationId: getMetrics
+      parameters:
+        - $ref: '#/components/parameters/EndTime'
+        - $ref: '#/components/parameters/StartTime'
+        - $ref: '#/components/parameters/MetricType'
+        - $ref: '#/components/parameters/MaxFetch'
+      responses:
+        '200':
+          $ref: '#/components/responses/okGetResponse'
+        '204':
+          $ref: '#/components/responses/notFound'
+        '400':
+          $ref: '#/components/responses/badRequest'
+components:
+  parameters:
+    MaxFetch:
+      name: max_fetch
+      in: query
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+    StartTime:
+      name: start
+      in: query
+      schema:
+        type: number
+        format: double
+        minimum: 1000
+    EndTime:
+      name: end
+      in: query
+      schema:
+        type: number
+        format: double
+        minimum: 1000
+    MetricType:
+      name: type
+      in: query
+      schema:
+        type: string
+        enum:
+          - network
+          - bandwidth
+          - temperature
+          - cpu
+  schemas:
+    OkResponse:
+      required:
+        - msg
+        - status
+      properties:
+        status:
+          type: integer
+          minimum: 1
+        msg:
+          type: string
+          minLength: 3
+    MetricsData:
+      required:
+        - type
+        - timestamp
+        - metric
+      properties:
+        type:
+          description: represents the type of metric
+          type: string
+          enum:
+            - network
+            - bandwidth
+            - temperature
+            - cpu
+        timestamp:
+          type: number
+          format: double
+          minimum: 1000
+        metric:
+          type: number
+          format: double
+    ProblemDetail:
+      type: object
+      required:
+        - msg
+        - status
+        - detail
+      properties:
+        status:
+          type: integer
+          minimum: 1
+        msg:
+          type: string
+          minLength: 3
+        detail:
+          type: string
+          minLength: 1
+  responses:
+    okGetResponse:
+      description: |- 
+        HTTP 200 OK with a list of pairs (long, double) 
+        representing the metrics in the specified range
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/MetricsData'
+            minItems: 0
+    okResponse:
+      description: common OK (200) response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OkResponse'
+    badRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    notFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'

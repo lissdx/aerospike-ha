@@ -1,0 +1,12 @@
+---
+version: '3.8'
+services:
+  aerospike:
+    image: aerospike:ee-7.1.0.1
+    container_name: aerospike
+    restart: always
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+      - '3002:3002'
+...
