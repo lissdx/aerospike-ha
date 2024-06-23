@@ -15,6 +15,7 @@ WORKDIR /app
 
 COPY --from=build /go/bin/* .
 COPY ./configs ./configs
+COPY ./udf ./udf
 COPY ./start.sh .
 RUN chmod +x start.sh
 

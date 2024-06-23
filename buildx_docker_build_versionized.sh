@@ -3,7 +3,7 @@
 PROVIDER="docker.io"
 USERNAME="yuril"
 REPOSITORY_NAME="aerospike-ha"
-VERSION_TAG="0.0.2"
+VERSION_TAG="0.0.3"
 
 image="$PROVIDER/$USERNAME/$REPOSITORY_NAME"
 

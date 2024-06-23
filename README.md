@@ -15,6 +15,12 @@ are linked to the concrete timestamp.
 In general, this means we can store one metric  
 for each unique combination of type and timestamp.
 
+### Aerospike DB Capacity
+The default RRD DB capacity is **1000 records**,   
+but we are able to change it by setting the env `AS_MAX_METRIC_CAPACITY`  
+Constraints:  
+  if `AS_MAX_METRIC_CAPACITY` <= 0 the default capacity value will be used.
+
 ### API
 ###### An [openapi.yaml](openapi/openapi.yaml) file is provided to ensure good integrability.
 
@@ -68,7 +74,9 @@ There are 2 main files:
   includes DB put/get handlers
 
 ### Config
-The configuration file is provided: [development.env](configs/development.env)
+The configuration file is provided: [development.env](configs/development.env)  
+NOTE: Any environment variable from [development.env](configs/development.env) can   
+be overridden using environment variables.
 
 ### How To Run
 1. The simplest way is to run it in docker-compose the command:

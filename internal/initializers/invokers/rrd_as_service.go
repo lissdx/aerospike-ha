@@ -9,7 +9,7 @@ import (
 	"github.com/lissdx/aerospike-ha/internal/pkg/process"
 )
 
-const ver = "20240620"
+const ver = "20240623"
 
 func RunRRDServer(process process.NameableProcessor, logger logger.ILogger, lifecycle fx.Lifecycle) {
 	lifecycle.Append(fx.Hook{
